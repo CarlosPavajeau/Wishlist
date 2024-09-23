@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Wishlist.Api;
 
+var builder = WebApplication.CreateBuilder(args);
+
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .WriteTo.Console()
+    .ReadFrom.Configuration(builder.Configuration)
     .CreateBootstrapLogger();
-
-var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
