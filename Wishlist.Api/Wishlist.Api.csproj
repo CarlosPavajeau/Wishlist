@@ -24,4 +24,8 @@
       </Content>
     </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Wishlist\Wishlist.csproj"/>
+  </ItemGroup>
+
 </Project>
