@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Serilog.Templates.Themes;
 using SerilogTracing;
 using SerilogTracing.Expressions;
-using Wishlist.Api;
+using Wishlist.Api.Endpoints;
+using Wishlist.Infrastructure.Persistence.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ using var listener = new ActivityListenerConfiguration()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSerilog();
+builder.Services.AddDbContext<WishlistDbContext>(options => { options.UseInMemoryDatabase("Wishlist"); });
+builder.Services.AddMediatR(config => { config.RegisterServicesFromAssembly(typeof(WishlistDbContext).Assembly); });
 
 builder.Logging.AddSerilog();
 
@@ -37,21 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/{id:int}", (int id, [FromServices] ILogger<LoggerHelper> logger) =>
-{
-    switch (id)
-    {
-        case 1:
-            logger.LogInformation("Returning product with id {Id}", id);
-            return Results.Ok(new {Id = id, Name = "Product 1"});
-        case 3:
-            logger.LogError("Product with id {Id} not supported", id);
-            return Results.BadRequest("Product not supported");
-    }
-
-    logger.LogWarning("Product with id {Id} not found", id);
-    return Results.NotFound();
-});
+app.MapSearchCategories();
 
 app.UseHttpsRedirection();
 
