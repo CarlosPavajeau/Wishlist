@@ -41,6 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapSearchCategories();
+app.MapProducts();
 
 app.UseHttpsRedirection();
 
