@@ -14,5 +14,11 @@ public class WishlistDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(WishlistDbContext).Assembly);
+
+        modelBuilder.Entity<Category>().HasData(
+            new Category(Guid.NewGuid(), "Electronics"),
+            new Category(Guid.NewGuid(), "Books"),
+            new Category(Guid.NewGuid(), "Clothing")
+        );
     }
 }

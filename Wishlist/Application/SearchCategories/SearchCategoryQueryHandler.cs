@@ -11,6 +11,8 @@ public class SearchCategoryQueryHandler(WishlistDbContext db)
     public async Task<IEnumerable<CategoryResponse>> Handle(SearchCategoryQuery request,
         CancellationToken cancellationToken)
     {
+        await db.Database.EnsureCreatedAsync(cancellationToken);
+
         var categories = await db.Categories
             .AsNoTracking()
             .ToListAsync(cancellationToken);
