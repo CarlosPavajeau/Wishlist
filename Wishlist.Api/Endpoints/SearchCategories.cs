@@ -7,7 +7,7 @@ public static class SearchCategories
 {
     public static WebApplication MapSearchCategories(this WebApplication app)
     {
-        app.MapGet("/categories/search", async (IMediator mediatr, CancellationToken cancellationToken) =>
+        app.MapGet("/categories", async (IMediator mediatr, CancellationToken cancellationToken) =>
         {
             var categories = await mediatr.Send(new SearchCategoryQuery(), cancellationToken);
 
