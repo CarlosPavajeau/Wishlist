@@ -40,8 +40,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapSearchCategories();
-app.MapProducts();
+app.MapSearchCategories()
+    .MapProducts()
+    .MapWishlists();
 
 app.UseHttpsRedirection();
 
