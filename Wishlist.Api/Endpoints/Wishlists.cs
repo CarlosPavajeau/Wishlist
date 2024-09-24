@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Wishlist.Application.AddProductWishlist;
 using Wishlist.Application.DeleteProductWishlist;
+using Wishlist.Application.SearchUserWishlist;
 
 namespace Wishlist.Api.Endpoints;
 
@@ -45,6 +46,26 @@ public static class Wishlists
                 catch (Exception e)
                 {
                     logger.LogError(e, "Error deleting product from wishlist");
+                    return Results.BadRequest(e.Message);
+                }
+            });
+
+        app.MapGet("/wishlists/{userId}",
+            async (
+                [FromServices] IMediator mediator,
+                [FromServices] ILogger<LoggerHelper> logger,
+                string userId
+            ) =>
+            {
+                try
+                {
+                    var result = await mediator.Send(new SearchUserWishlistQuery(userId));
+
+                    return Results.Ok(result);
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e, "Error searching user wishlist");
                     return Results.BadRequest(e.Message);
                 }
             });
